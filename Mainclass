@@ -1,0 +1,38 @@
+# Usage example:
+library = Library()
+
+# User registration
+user1 = User('1', 'John')
+user_id = library.user_registration(user1)
+
+# Upload user ID
+id_data = b'ID data'  # Binary data for the ID
+library.database.upload_id(user_id, id_data)
+
+# Add a book
+book1 = Book('1', 'Book Title', 'Book Author')
+book_id = library.add_book(book1)
+
+# Issue a book
+library.issue_book(user_id, book_id)
+
+# Return a book
+library.return_book(user_id, book_id)
+
+# Search for a book
+result = library.search_book('Book Title')
+print(result)
+
+# Update user details
+user_details = {'name': 'John Doe'}
+library.update_user(user_id, user_details)
+
+# Update book details
+book_details = {'title': 'New Title'}
+library.update_book(book_id, book_details)
+
+# Remove a user
+library.remove_user(user_id)
+
+# Remove a book
+library.remove_book(book_id)
