@@ -33,3 +33,65 @@ class DatabaseInterface:
     def remove_book(self, book_id):
         pass
 
+class MongoDB(DatabaseInterface):
+    def __init__(self):
+        self.client = MongoClient('mongodb://localhost:27017/')
+        self.db = self.client['library_management_system']
+        self.users = self.db['users']
+        self.books = self.db['books']
+
+    def register_user(self, user_details):
+        # Insert the user details into the users collection
+        user_id = self.users.insert_one(user_details).inserted_id
+        return str(user_id)
+
+    def upload_id(self, user_id, id_data):
+        # Update the uploaded ID field of the user with the binary data
+        self.users.update_one({'_id': user_id}, {'$set': {'uploaded_id': Binary(id_data)}})
+
+    def add_book(self, book_details):
+        # Insert the book details into the books collection
+        book_id = self.books.insert_one(book_details).inserted_id
+        return str(book_id)
+
+    def issue_book(self, user_id, book_id):
+        # Update the issued_to field of the book with the user ID
+        self.books.update_one({'_id': book_id}, {'$set': {'issued_to': user_id}})
+        # Update the user's books_issued field with the book ID
+        self.users.update_one({'_id': user_id}, {'$push': {'books_issued': book_id}})
+
+    def return_book(self, user_id, book_id):
+        # Update the issued_to field of the book to None
+        self.books.update_one({'_id': book_id}, {'$set': {'issued_to': None}})
+        # Remove the book ID from the user's books_issued field
+        self.users.update_one({'_id': user_id}, {'$pull': {'books_issued': book_id}})
+
+    def search_book(self, book_title):
+        # Search for a book with the given title in the books collection
+        book = self.books.find_one({'title': book_title})
+        if book:
+            if book['issued_to']:
+                return 'Checked out'
+            else:
+                return 'Available'
+        else:
+            return 'Not found'
+
+    def update_user(self, user_id, user_details):
+        # Update the user details in the users collection
+        self.users.update_one({'_id': user_id}, {'$set': user_details})
+
+    def update_book(self, book_id, book_details):
+        # Update the book details in the books collection
+        self.books.update_one({'_id': book_id}, {'$set': book_details})
+
+    def remove_user(self, user_id):
+        # Remove the user from the users collection
+        self.users.delete_one({'_id': user_id})
+        # Remove the user's reference from the books collection
+        self.books.update_many({'issued_to': user_id}, {'$set': {'issued_to': None}})
+
+    def remove_book(self, book_id):
+        # Remove the book from the books collection
+        self.books.delete_one({'_id': book_id})
+
