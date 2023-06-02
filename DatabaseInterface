@@ -1,0 +1,35 @@
+from pymongo import MongoClient
+from bson.binary import Binary
+
+
+class DatabaseInterface:
+    def register_user(self, user_details):
+        pass
+
+    def upload_id(self, user_id, id_data):
+        pass
+
+    def add_book(self, book_details):
+        pass
+
+    def issue_book(self, user_id, book_id):
+        pass
+
+    def return_book(self, user_id, book_id):
+        pass
+
+    def search_book(self, book_title):
+        pass
+
+    def update_user(self, user_id, user_details):
+        pass
+
+    def update_book(self, book_id, book_details):
+        pass
+
+    def remove_user(self, user_id):
+        pass
+
+    def remove_book(self, book_id):
+        pass
+
