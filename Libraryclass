@@ -1,0 +1,34 @@
+class Library:
+    def __init__(self):
+        self.database = MongoDB()
+
+    def user_registration(self, user):
+        user_details = user.register_user()
+        user_id = self.database.register_user(user_details)
+        return user_id
+
+    def add_book(self, book):
+        book_details = book.add_book()
+        book_id = self.database.add_book(book_details)
+        return book_id
+
+    def issue_book(self, user_id, book_id):
+        self.database.issue_book(user_id, book_id)
+
+    def return_book(self, user_id, book_id):
+        self.database.return_book(user_id, book_id)
+
+    def search_book(self, book_title):
+        return self.database.search_book(book_title)
+
+    def update_user(self, user_id, user_details):
+        self.database.update_user(user_id, user_details)
+
+    def update_book(self, book_id, book_details):
+        self.database.update_book(book_id, book_details)
+
+    def remove_user(self, user_id):
+        self.database.remove_user(user_id)
+
+    def remove_book(self, book_id):
+        self.database.remove_book(book_id)
