@@ -1,0 +1,14 @@
+class User:
+    def __init__(self, user_id, name):
+        self.ID = user_id
+        self.name = name
+        self.uploaded_ID = None
+
+    def register_user(self):
+        user_details = {
+            '_id': self.ID,
+            'name': self.name,
+            'uploaded_id': None,
+            'books_issued': []
+        }
+        return user_details
