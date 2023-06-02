@@ -1,0 +1,19 @@
+
+class Book:
+    def __init__(self, book_id, title, author):
+        self.ID = book_id
+        self.title = title
+        self.author = author
+        self.availability = True
+        self.issued_to = None
+
+    def add_book(self):
+        book_details = {
+            '_id': self.ID,
+            'title': self.title,
+            'author': self.author,
+            'availability': self.availability,
+            'issued_to': self.issued_to
+        }
+        return book_details
+
